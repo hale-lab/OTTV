@@ -1,0 +1,15 @@
+beautifulsoup4==4.8.0
+decorator==5.1.1
+eppy==0.5.63
+future==0.18.2
+GH-IO-stubs==7.7.21140
+GH-Util-stubs==7.7.21140
+Grasshopper-stubs==7.7.21140
+lxml==4.9.2
+munch==2.5.0
+pydot3k==1.0.17
+pyparsing==3.0.9
+Rhino-stubs==7.7.21140
+six==1.16.0
+soupsieve==2.3.2.post1
+tinynumpy==1.2.1
