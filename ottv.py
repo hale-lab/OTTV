@@ -20,7 +20,7 @@ building envelope to each orientation.
 """
 
 ghenv.Component.Name = "groupFacesbyOrient"
-ghenv.Component.NickName = 'h a l e °'
+ghenv.Component.NickName = 'OTTV'
 ghenv.Component.Message = '0.0.1'
 
 import rhinoscriptsyntax as rs
@@ -101,6 +101,39 @@ def checkOrient(result):
         return "NE"
     else :
         return "N"
+
+# create a function to sort each edges into V-H orientation.
+def edgeSort2VH(edges):
+    edgeH = []
+    edgeV_L = []
+    edgeV_R = []
+
+    for edge in edges:
+        edgeMid = rs.CurveMidPoint(edge)
+        edgeDir = rs.VectorCreate(edgeMid, faceCtr)
+        if edgeDir[2] > 0 and rs.IsVectorParallelTo(edgeDir, [0 ,0 ,1]) :
+            edgeH.append(edge)
+        elif edgeDir[1] > 0 and rs.IsVectorPerpendicularTo(edgeDir, [0 ,0 ,1]) :
+            edgeV_L.append(edge)
+        elif edgeDir[1] < 0 and rs.IsVectorPerpendicularTo(edgeDir, [0 ,0 ,1]) :
+            edgeV_R.append(edge)
+        elif edgeDir[0] > 0 and rs.IsVectorPerpendicularTo(edgeDir, [0 ,0 ,1]) :
+            edgeV_L.append(edge)
+        elif edgeDir[0] < 0 and rs.IsVectorPerpendicularTo(edgeDir, [0 ,0 ,1]) :
+            edgeV_R.append(edge)
+    
+    return edgeH, edgeV_L, edgeV_R
+
+# create a function to rotate shading(for SC).
+def rotateShading(edge, shading, angle) :
+    axisPtStart = rs.CurveStartPoint(edge)
+    axisPtEnd = rs.CurveEndPoint(edge)
+    rotationAxis = rs.VectorCreate(axisPtStart, axisPtEnd)
+    axisCtr = rs.CurveMidPoint(edge)
+    rotation = 90 - angle
+    rotatedShading = rs.RotateObject(shading, axisCtr, rotation, rotationAxis)
+    
+    return rotatedShading
 
 # list of variables.
 faces = []
